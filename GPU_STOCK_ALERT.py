@@ -5,13 +5,14 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import time
 from dotenv import load_dotenv
-import os 
+import os
+import json
 
 def main():
     load_dotenv()
     email = os.getenv('USER_EMAIL')
     pw = os.getenv('USER_PASS')
-    sms_gate = os.getenv('SMS_GATEWAY')
+    sms_gate = os.getenv('SMS_GATEWAY').split()
     url = "https://www.bestbuy.com/site/searchpage.jsp?id=pcat17071&qp=brand_facet%3DBrand~EVGA%5Ebrand_facet%3DBrand~NVIDIA%5Econdition_facet%3DCondition~New%5Egpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203070%5Egpusv_facet%3DGraphics%20Processing%20Unit%20(GPU)~NVIDIA%20GeForce%20RTX%203070%20Ti&st=nvidia+rtx+gpu"
     PATH = "C:\Program Files (x86)\chromedriver.exe"
 
@@ -45,7 +46,7 @@ def sendMail(data, email, pas, sms_gate):
         server.login(email, pas)
         msg = MIMEMultipart()
         msg['From'] = email
-        msg['To'] = sms_gate
+        msg['To'] = ", ".join(sms_gate)
         msg['Subject'] = 'GPU STOCK ALERT'
         body = data
         msg.attach(MIMEText(body, 'plain'))
